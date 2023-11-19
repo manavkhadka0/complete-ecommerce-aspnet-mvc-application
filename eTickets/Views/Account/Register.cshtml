@@ -1,7 +1,6 @@
-﻿@using eTickets.Data.ViewModels; 
-@model RegisterVM;
+﻿@model RegisterVM;
 
-@{ 
+@{
     ViewData["Title"] = "Sign up for a new account";
 }
 
@@ -11,12 +10,25 @@
             <h4>Sign up for a new account</h4>
         </p>
 
-        @if(TempData["Error"] != null)
-            {
-                <div class="col-md-12 alert alert-danger">
-                    <span><b>Sorry!</b> - @TempData["Error"] </span>
-                </div>
-            }
+        @if (TempData["Error"] != null)
+        {
+            <div class="col-md-12 alert alert-danger">
+                <span><b>Sorry!</b> - @TempData["Error"] </span>
+            </div>
+        }
+
+        @if (((TempData["Errors"] as List<string>) ?? new List<string>()).Count > 0){
+            <div class="col-md-12 alert alert-danger">
+                <strong>Error:</strong>
+                <ul>
+                    @foreach (var error in (List<string>)TempData["Errors"])
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+            </div>
+        }
+
 
         <div class="row">
             <div class="col-md-8 offset-2">
@@ -25,27 +37,27 @@
 
                     <div class="form-group">
                         <label asp-for="FullName" class="control-label"></label>
-                        <input asp-for="FullName" class="form-control" />
+                        <input asp-for="FullName" class="form-control"/>
                         <span asp-validation-for="FullName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="EmailAddress" class="control-label"></label>
-                        <input asp-for="EmailAddress" class="form-control" />
+                        <input asp-for="EmailAddress" class="form-control"/>
                         <span asp-validation-for="EmailAddress" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Password" class="control-label"></label>
-                        <input asp-for="Password" class="form-control" />
+                        <input asp-for="Password" class="form-control"/>
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="ConfirmPassword" class="control-label"></label>
-                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <input asp-for="ConfirmPassword" class="form-control"/>
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
-                        <input class="btn btn-outline-success float-right" type="submit" value="Sign up" />
+                        <input class="btn btn-outline-success float-right" type="submit" value="Sign up"/>
                         <a class="btn btn-outline-secondary" asp-controller="Movies" asp-action="Index">Cancel</a>
                     </div>
                 </form>

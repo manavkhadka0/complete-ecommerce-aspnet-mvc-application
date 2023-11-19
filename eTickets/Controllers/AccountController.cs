@@ -1,16 +1,4 @@
-﻿using eTickets.Data;
-using eTickets.Data.Static;
-using eTickets.Data.ViewModels;
-using eTickets.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace eTickets.Controllers
+﻿namespace eTickets.Controllers
 {
     public class AccountController : Controller
     {
@@ -83,8 +71,16 @@ namespace eTickets.Controllers
             };
             var newUserResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
 
-            if (newUserResponse.Succeeded)
-                await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+            switch (newUserResponse.Succeeded)
+            {
+                case false:
+                    TempData["Errors"] = newUserResponse.Errors.Select(x => x.Description).ToList();
+                    return View(registerVM);
+                case true:
+                    await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+                    break;
+            }
+
 
             return View("RegisterCompleted");
         }
